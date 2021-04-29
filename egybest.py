@@ -2,7 +2,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import pandas as pd
 
-driver = webdriver.Chrome(r"C:\Users\mohamed\Desktop\egybest\chromedriver.exe") #incase you are chrome
+driver = webdriver.Chrome(r"/home/mohamed/Desktop/egybest/chromedriver") #incase you are chrome
 
 def initSeries(url): #return a dict containing general informations about the serie
     driver.get(url)
@@ -29,6 +29,12 @@ def ScanSeason(url):
     data['episods_count'] = len(soup.find('div', attrs={'class':'movies_small'}))
     data['episods'] = [a['href'] for a in reversed(soup.find('div', attrs={'class':'movies_small'}).findAll('a',href=True))]
     print(data)
+def ScanEpisode(url):
+    driver.get(url)
+    data = {}
+    content = driver.page_source
+    soup = BeautifulSoup(content)
+    data['episods_count'] = len(soup.find('div', attrs={'class':'dls_table btns full mgb'}))
 
 general = initSeries("https://seen.egybest.ltd/series/the-resident-2018/?ref=tv-p1")
 for i in general['seasons'] :
